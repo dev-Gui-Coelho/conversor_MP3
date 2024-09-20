@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+import os 
+from pytube import YouTube
+from moviepy.editor import *
 
 class MyApp:
     def __init__(self, url:str = None):
@@ -19,8 +22,10 @@ class MyApp:
         
     def __var(self) -> str:
         self.var_url = StringVar(self.window)
-        self.url = self.var_url
-        return self.url
+        self.__url = self.var_url
+    
+    def get_url(self):
+        return self.__url.get()
     
     def __widgets(self):
         txt_title = Label(self.window, text='Conversor MP3', fg='#fff', bg='#1E1E1E', font=("Arial", 15) ).place(x=200, y=30)
@@ -62,7 +67,20 @@ class MyApp:
             self.window.destroy()
     
     def __baixar(self):
-        
-        print(self.url.get())
+        # teste = self.get_url()
+        # print(teste)
+        # video = YouTube(self.get_url())
+        # print(video.title)
+        # steam = video.streams.filter(only_audio=True).first()
+        # steam = video.streams.get_highest_resolution().download()
+        # name = steam.replace("D:\Codigos\BaixarMusicas_TKinter\\", '')
+        # name = steam.replace(".mp4", '')
+        # file = AudioFileClip(f'{steam}')
+        # file.write_audiofile(f'{name}.mp3')
+        # file.close()
+        # os.unlink(steam)
+        # os.unlink(f'{name}.mp3')
+        # print(self.get_url())
+        pass
 
 MyApp()
