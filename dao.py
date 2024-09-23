@@ -27,4 +27,3 @@ def remover(nome:str):
     conn.commit()
     conn.close()
 
-musicas_list()
