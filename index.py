@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import os 
-from pytube import YouTube
-from moviepy.editor import *
+import shutil 
+from pytubefix import YouTube
+
 
 class MyApp:
     def __init__(self, url:str = None):
@@ -67,20 +67,12 @@ class MyApp:
             self.window.destroy()
     
     def __baixar(self):
-        # teste = self.get_url()
-        # print(teste)
-        # video = YouTube(self.get_url())
-        # print(video.title)
-        # steam = video.streams.filter(only_audio=True).first()
-        # steam = video.streams.get_highest_resolution().download()
-        # name = steam.replace("D:\Codigos\BaixarMusicas_TKinter\\", '')
-        # name = steam.replace(".mp4", '')
-        # file = AudioFileClip(f'{steam}')
-        # file.write_audiofile(f'{name}.mp3')
-        # file.close()
-        # os.unlink(steam)
-        # os.unlink(f'{name}.mp3')
-        # print(self.get_url())
-        pass
+        yt = YouTube(self.get_url())
+        print(yt.title)
+        yt.streams.get_audio_only().download(mp3=True)
+        caminho_ori = f'D:\Codigos\BaixarMusicas_TKinter\{yt.title}.mp3'
+        caminho_dest = 'D:\Codigos\BaixarMusicas_TKinter\Musicas'
+        shutil.move(caminho_ori, caminho_dest)
+        
 
 MyApp()
