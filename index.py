@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import shutil 
 from pytubefix import YouTube
-
+from dao import *
 
 class MyApp:
     def __init__(self, url:str = None):
@@ -27,7 +27,7 @@ class MyApp:
     def get_url(self):
         return self.__url.get()
     
-    def __widgets(self):
+    def __widgets(self) -> None:
         txt_title = Label(self.window, text='Conversor MP3', fg='#fff', bg='#1E1E1E', font=("Arial", 15) ).place(x=200, y=30)
         #URL#
         # var_url = StringVar(self.window)
@@ -47,17 +47,23 @@ class MyApp:
 
     def __historico(self) -> None:
         window_2 = Tk()
-        window_2.geometry('430x260')
-        table = ttk.Treeview(window_2,selectmode='browse', columns=('coluna0','coluna1', 'coluna2'), show='headings')
-        table.place(x=17, y=20)
-        table.column('coluna0', width=60, minwidth=60, stretch=NO)
-        table.heading('#1', text='ID')
-        table.column('coluna1', width=190, minwidth=120, stretch=NO)
-        table.heading('#2', text='NOME')
-        table.column('coluna2', width=140, minwidth=120, stretch=NO)
-        table.heading('#3', text='DATA')
-
+        window_2.geometry('600x260')
+        self.table = ttk.Treeview(window_2,selectmode='browse', columns=('coluna0','coluna1', 'coluna2'), show='headings')
+        self.table.place(x=17, y=20)
+        self.table.column('coluna0', width=60, minwidth=60, stretch=NO)
+        self.table.heading('#1', text='ID')
+        self.table.column('coluna1', width=190, minwidth=120, stretch=NO)
+        self.table.heading('#2', text='NOME')
+        self.table.column('coluna2', width=300, minwidth=120, stretch=NO)
+        self.table.heading('#3', text='URL')
+        self.lista = consultar()
+        self.__add_histo()
         window_2.mainloop()
+        
+    def __add_histo(self):
+        for (i,n,u) in self.lista:
+            self.table.insert('', 'end', values=(i,n,u))
+
 
     def __loop(self) -> None:
         self.window.mainloop()
@@ -66,13 +72,14 @@ class MyApp:
         if messagebox.askyesno('Sair', 'Deseja sair?'):
             self.window.destroy()
     
-    def __baixar(self):
+    def __baixar(self) -> None:
         yt = YouTube(self.get_url())
         print(yt.title)
         yt.streams.get_audio_only().download(mp3=True)
         caminho_ori = f'D:\Codigos\BaixarMusicas_TKinter\{yt.title}.mp3'
         caminho_dest = 'D:\Codigos\BaixarMusicas_TKinter\Musicas'
         shutil.move(caminho_ori, caminho_dest)
+        inserir(yt.title, self.get_url())
         
 
 MyApp()
